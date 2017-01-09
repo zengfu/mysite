@@ -34,4 +34,4 @@ def index(request):
 
     else:
         form=colorform()
-    return render(request,'index.html',{'form':form})
+    return render(request,'index.html',{'form':form,'book':'sbth'})
