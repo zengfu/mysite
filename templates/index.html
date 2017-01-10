@@ -3,12 +3,19 @@
 <div class="container">
 
 
+
+
     <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
-        {{ form }}
+        <label for="red">RED:</label>
+        <input type="range" min="0" max="1023"  value="{{ color.red }}" name="red" id="red">
+        <label for="blue">BLUE:</label>
+        <input type="range" min="0" max="1023"  value="{{ color.blue }}" name="blue" id="blue">
+        <label for="green">GREEN:</label>
+        <input type="range" min="0" max="1023"  value="{{ color.green }}" name="green" id="green">
         <div>
 
-            <input type="submit" value="SET" class="btn btn-primary col-md-offset-0 col-md-1">
+            <input type="submit" value="SET" class="button">
 
         </div>
 
@@ -17,5 +24,45 @@
     </form>
 
 </div>
+    <script type="text/javascript" >
+        var red=$('#red');
+        var blue=$('#blue');
+        var green=$('#green');
+        $('.button').hide();
+       $(document).ready(function(){
+           //setInterval('breathe(red)', 3000);
+           red.change(
+                   function () {
+                       //alert(red.val());
+                       $('form').submit();
+                   }
+           )
+           green.change(
+                   function () {
+                       //alert(red.val());
+                       $('form').submit();
+                   }
+           )
+           blue.change(
+                   function () {
+                       //alert(red.val());
+                       $('form').submit();
+                   }
+           )
+
+
+       });
+    function breathe(led) {
+        var value=led.val();
+        if(value<=1023) {
+            //led.val(light);
+            //$('form').submit();
+            led.val(value+1);
+        }
+        else
+            led.val(0);
+        //$('form').submit();
+    }
+    </script>
 {% endblock %}
 

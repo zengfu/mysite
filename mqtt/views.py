@@ -15,6 +15,7 @@ class colorform(forms.Form):
     #blue = forms.RegexField(max_length=1023)
 
 def index(request):
+    color = {'red': 0, 'green': 0, 'blue': 0}
     if request.method=="POST":
         form=colorform(request.POST)
         if form.is_valid():
@@ -22,16 +23,18 @@ def index(request):
             red=cd['red']
             green=cd['green']
             blue=cd['blue']
-            print red
-            print green
-            print blue
-            data = {
-                'led_r': red,
-                'led_g': green,
-                'led_b': blue
-            }
-            mqtt.client.publish('/mytopic', json.dumps(data))
 
+            data = {
+                'led_r': 1023-red,
+                'led_g': 1023-green,
+                'led_b': 1023-blue
+            }
+            color['red']=red
+            color['green']=green
+            color['blue']=blue
+            mqtt.client.publish('/mytopic', json.dumps(data))
+        return render(request, 'index.html', {'form': form,'color':color})
     else:
         form=colorform()
-    return render(request,'index.html',{'form':form})
+        print form
+        return render(request,'index.html',{'form':form,'color':color})
