@@ -19,4 +19,5 @@ from mqtt import views as mv
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', mv.index, name='index'),
+    url(r'^handle_led',mv.handle_led,name='handle_led'),
 ]

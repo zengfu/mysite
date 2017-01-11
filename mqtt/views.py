@@ -27,7 +27,8 @@ def index(request):
             data = {
                 'led_r': 1023-red,
                 'led_g': 1023-green,
-                'led_b': 1023-blue
+                'led_b': 1023-blue,
+                'cmd':1
             }
             color['red']=red
             color['green']=green
@@ -36,5 +37,23 @@ def index(request):
         return render(request, 'index.html', {'form': form,'color':color})
     else:
         form=colorform()
-        print form
+        print 'get'
         return render(request,'index.html',{'form':form,'color':color})
+def handle_led(request):
+    if request.method == 'POST':
+        red=request.POST['red']
+        green=request.POST['green']
+        blue=request.POST['blue']
+
+        data = {
+            'led_r': 1023 - int(red),
+            'led_g': 1023 - int(green),
+            'led_b': 1023 - int(blue),
+            'cmd':0
+        }
+        print data
+        mqtt.client.publish('/mytopic', json.dumps(data))
+
+        return HttpResponse("ok")
+    else:
+        return HttpResponse("<h1>test</h1>")
