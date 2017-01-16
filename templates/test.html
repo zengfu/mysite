@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block body %}
+
+     {% load staticfiles  %}
+<div class="container">
+    <canvas id="myCanvas" height="360" width="360"></canvas>
+    <label for="red">Bright</label>
+    <input type="range" min="0" max="1" id="light" step="0.01" value="0.8" onchange="render_canvas(ctx)">
+</div>
+    <script type="text/javascript" >
+    var can=document.getElementById('myCanvas');
+    var ctx=can.getContext('2d');
+
+    var setData=function(imageData,x,y,value){
+        imageData.data[((y*(imageData.width*4)) + (x*4)) + 0]=value[0];
+        imageData.data[((y*(imageData.width*4)) + (x*4)) + 1]=value[1];
+        imageData.data[((y*(imageData.width*4)) + (x*4)) + 2]=value[2];
+        imageData.data[((y*(imageData.width*4)) + (x*4)) + 3]=value[3];
+    };
+    var imageData=ctx.createImageData(360,360);
+
+    for(var i=0;i<360;i++){
+        for(var i2=0;i2<360;i2++){
+            var pixel=HSVToRGB(i2,i/360,0.8);
+            setData(imageData,i2,i,[
+                pixel.r,
+                pixel.g,
+                pixel.b,
+                255
+            ]);
+        }
+    }
+    ctx.putImageData(imageData, 0, 0);
+
+    function render_canvas(canvas_2d){
+        var bright = $('#light');
+        for(var i=0;i<360;i++){
+        for(var i2=0;i2<360;i2++){
+            var pixel=HSVToRGB(i2,i/360,bright.val());
+            setData(imageData,i2,i,[
+                pixel.r,
+                pixel.g,
+                pixel.b,
+                255
+            ]);
+        }
+        }
+        canvas_2d.putImageData(imageData, 0, 0);
+    }
+
+    function HSVToRGB(h,s,v){
+        var i;
+        var f, p, q, t;
+        var r,g,b;
+        if( s == 0 ) {
+            v = Math.floor(v*255);
+            return {
+                r:v,
+                g:v,
+                b:v
+            };
+        }
+        h /= 60;
+        i = Math.floor( h );
+        f = h - i;
+        p = v * ( 1 - s );
+        q = v * ( 1 - s * f );
+        t = v * ( 1 - s * ( 1 - f ) );
+        switch( i ) {
+            case 0:r = v;g = t;b = p;break;
+            case 1:r = q;g = v;b = p; break;
+            case 2: r = p;g = v;b = t;break;
+            case 3:r = p;g = q;b = v;break;
+            case 4:r = t;g = p;b = v;break;
+            default:r = v;g = p;b = q;break;
+        }
+        return {
+            r:r*255,
+            g:g*255,
+            b:b*255
+        };
+    }
+
+     //report the mouse position on click
+    can.addEventListener("click", function (evt) {
+        var mousePos = getMousePos(can, evt);
+        test(mousePos.x, mousePos.y);
+    }, false);
+
+     //Get Mouse Position
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+         x: evt.clientX - rect.left * (canvas.width / rect.width),
+         y: evt.clientY - rect.top * (canvas.height / rect.height)
+    }
+    }
+
+    $(document).ready(function() {
+           //setInterval('breathe(red)', 100);
+           $.ajaxSetup({
+               data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+           });
+       })
+
+    function test(x, y) {
+        //alert('test');
+        var light = $('#light');
+        var pixel_rgb = HSVToRGB(x, y/360, light.val());
+        //alert(typeof(pixel_rgb.r));
+        $.ajax({
+            type:"POST",
+            data:{red:Math.round(pixel_rgb.r),green:Math.round(pixel_rgb.g),blue:Math.round(pixel_rgb.b)},
+            url:"{% url 'get_color' %}",
+            cache:false,
+            success:function (result,status,xml) {
+                //alert(result)
+            },
+            error:function () {
+                //alert("false")
+            }
+        })
+    }
+
+    </script>
+{% endblock %}

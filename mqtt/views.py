@@ -57,3 +57,28 @@ def handle_led(request):
         return HttpResponse("ok")
     else:
         return HttpResponse("<h1>test</h1>")
+def sb(th):
+    b=2
+    a=-1/1023.0
+    return int(th*th*a+b*th)
+def get_color(request):
+    if request.method == 'POST':
+        red = request.POST['red']
+        green = request.POST['green']
+        blue = request.POST['blue']
+        print "red:%s,green:%s,blue:%s"%(red,green,blue)
+        data = {
+            'led_r': sb(1023 - int(int(red)*4)),
+            'led_g': sb(1023 - int(int(blue)*4)),
+            'led_b': sb(1023 - int(int(green)*4)),
+            'cmd': 0
+        }
+        print data
+        mqtt.client.publish('/mytopic', json.dumps(data))
+
+        return HttpResponse("ok")
+    else:
+        return HttpResponse("<h1>test</h1>")
+
+def test(request):
+    return render(request, 'test.html')
