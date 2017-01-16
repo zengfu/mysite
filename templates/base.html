@@ -6,7 +6,7 @@
     <title>BananaLife</title>
     <link rel="stylesheet" href="{% static "js/jquery-3.1.1.js" %}">
     <script src="{% static "js/jquery-3.1.1.js" %}"></script>
-
+    <link rel="stylesheet" type="text/css" media="all" href="{% static "css/aeon-grid.css" %}" />
     {% block link %}
     {% endblock %}
 
@@ -14,7 +14,28 @@
 
 <body>
 {% block navigate %}
+<div class="container">
+    <div class="content">
+        <!--Do all your markup here between content class-->
+        <div style="height: 10px"></div>
+        <div class="col1" style="height: 36px"></div>
+        <div class="col2">
+            <a href="{% url "index" %}">
+                <img src="{% static "img/bananalife.png" %}" style="height: 36px">
+            </a>
+        </div>
+        <form role="search">
+            <input type="text"  placeholder="Search" class="col5" style="border: 2px solid #EE950A;height: 36px;outline: none;margin-right: 10px">
+        </form>
+        <div class="col4" style="height: 36px"></div>
+    </div>
+    <div style="height: 10px;" class="col12"></div>
+    <div class="col4" style="background-color: red">3</div>
+    <div class="col4" style="background-color: blue">4</div>
+    <div class="col4">5</div>
+</div>
 
+</div>
 
 {% endblock %}
 
