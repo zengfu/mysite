@@ -22,18 +22,26 @@
 {% block head %}
 {% endblock %}
 {% block navigate %}
-<div class="row" style="height: 34px ;background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#FFD40F), to(#FF8005))">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-1">
+<div class="row" style="height: 36px ;">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-2">
         <a href="{% url "index" %}">
-            <p style="font-size: 20px">BananaLife.top</p>
+            <img src="{% static "img/bananalife.png" %}" style="height: 36px">
         </a>
+    </div>
+    <div>
+        <form role="search">
+            <input type="text"  placeholder="Search" class="col-sm-3" style="border: 2px solid #EE950A;height: 36px">
+            <input type="submit" value="" style="background-image: url(/../static/img/banana36x36.png);width:36px;height:36px;border: 1px solid white;border-radius: 15px">
+            <input type="submit" value="" style="background-image: url(/../static/img/github_34x34.png);width:36px;height:36px;border: 1px solid white;border-radius: 15px;">
 
 
 
 
 
-  </div>
+        </form>
+    </div>
+
 </div>
 {% endblock %}
 
