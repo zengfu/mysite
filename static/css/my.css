@@ -1,0 +1,14 @@
+.search-img{
+    background:no-repeat center;
+    width: 94px;
+    height:36px;
+    border: 1px solid white;
+    border-radius: 1px;
+    outline: none;
+}
+.nav_items{
+    font-size: 20px;
+    color: white;
+    line-height: 36px;
+
+}
